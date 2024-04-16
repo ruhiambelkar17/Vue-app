@@ -3,16 +3,19 @@
 //import router from '../router/Index';
 import { useApiStore } from '../store/index';
 //import {router-link} from 'vue-router';
-
+import {decodeCredential, googleLogout} from "vue3-google-login"
 export default {
     data() {
         return {
             num: 1,
             apiStore: useApiStore(),
             queList: {},
+            loggedIn:false,
+            user:null,
             callback:(response) => {
                 console.log("Logged in");
-                console.log(response)
+                this.loggedIn=true;
+                this.user=decodeCredential(response.credential);
             },
         };
     },
@@ -23,6 +26,10 @@ export default {
     methods: {
         async loadData() {
             await this.apiStore.getApiData();
+        },
+        logout(){
+            googleLogout();
+            this.loggedIn=false;
         }
     },
     //components: { router }
@@ -111,8 +118,14 @@ async function loadData() {
     </nav>
    
         <h1>google login:</h1>
-        <GoogleLogin :callback="callback" prompt auto-login></GoogleLogin>
-   
+        
+        <div v-if="loggedIn">
+            <button @click="logout">Logout</button>
+        <p>The user currently logged in is: {{ user.name }}</p>
+        </div>
+        <div v-else>
+            <GoogleLogin :callback="callback" prompt auto-login></GoogleLogin>
+        </div>
     <!-- <h2>{{ apiStore.apiData }}</h2> -->
   <h3>data from store: {{ apiStore.count }} {{ apiStore.doubleCount }}</h3>
     <button @click="apiStore.incrementData">click</button> 
