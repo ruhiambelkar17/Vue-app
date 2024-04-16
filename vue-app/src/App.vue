@@ -1,5 +1,6 @@
 <script >
 import Home from './views/Home.vue'
+import {RouterView} from 'vue-router'
 
 export default{
   components:{
@@ -12,7 +13,8 @@ export default{
 
 <template>
   <div>
-    <Home></Home>
+    <router-view>
+    </router-view>
    </div>
 </template>
 
