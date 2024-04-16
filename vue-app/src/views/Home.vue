@@ -9,7 +9,11 @@ export default {
         return {
             num: 1,
             apiStore: useApiStore(),
-            queList: {}
+            queList: {},
+            callback:(response) => {
+                console.log("Logged in");
+                console.log(response)
+            },
         };
     },
     created() {
@@ -105,6 +109,10 @@ async function loadData() {
         </div>
       </div>
     </nav>
+   
+        <h1>google login:</h1>
+        <GoogleLogin :callback="callback" prompt auto-login></GoogleLogin>
+   
     <!-- <h2>{{ apiStore.apiData }}</h2> -->
   <h3>data from store: {{ apiStore.count }} {{ apiStore.doubleCount }}</h3>
     <button @click="apiStore.incrementData">click</button> 
